@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Round 2 — themes, layouts & motion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body { font-family: Inter, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; background: #08090c; color: #fff; -webkit-font-smoothing: antialiased; }
+
+    /* ---------- intro ---------- */
+    .intro { padding: 56px 24px 12px; text-align: center; }
+    .intro h1 { font-family: Anton, Impact, sans-serif; font-weight: 400; font-size: clamp(26px, 4vw, 42px); margin: 0 0 12px; letter-spacing: .02em; }
+    .intro p { color: #b9c0cc; margin: 6px auto; font-size: 15px; max-width: 780px; line-height: 1.6; }
+    .intro b { color: #fff; }
+    .badge { display: inline-block; margin: 4px 6px 0; padding: 6px 14px; border-radius: 999px; border: 1px solid #2e3440; font: 600 11px/1 ui-monospace, monospace; letter-spacing: .12em; text-transform: uppercase; }
+    .badge.live { color: #7ee2a8; }
+    .badge.rec { color: #38bdf8; }
+
+    .research { max-width: 880px; margin: 26px auto 8px; background: #0e1015; border: 1px solid #1f232c; border-radius: 20px; padding: 22px 26px; text-align: left; }
+    .research h2 { font-size: 13px; letter-spacing: .22em; text-transform: uppercase; color: #8a93a5; margin: 0 0 14px; font-family: ui-monospace, monospace; font-weight: 600; }
+    .research li { color: #c6cdd9; font-size: 14px; line-height: 1.75; }
+    .research li b { color: #fff; }
+    .research li span { color: #6fdcb0; font-family: ui-monospace, monospace; font-size: 12px; }
+    .research ul { margin: 0; padding-left: 18px; }
+
+    /* ---------- shared theme panel ---------- */
+    .panel { position: relative; min-height: 76vh; padding: 84px 24px 64px; display: flex; align-items: center; justify-content: center; background: var(--bg); color: var(--fg); }
+    .tag { position: absolute; top: 20px; left: 24px; z-index: 5; display: flex; align-items: center; gap: 10px; font: 600 11px/1 ui-monospace, monospace; letter-spacing: .16em; text-transform: uppercase; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--tagline, rgba(255,255,255,.28)); background: var(--tagbg, rgba(12,12,16,.6)); color: var(--tagfg, #fff); backdrop-filter: blur(4px); }
+    .sw { display: flex; gap: 4px; }
+    .sw i { width: 12px; height: 12px; border-radius: 4px; border: 1px solid rgba(127,127,127,.4); }
+    .mini { width: 100%; max-width: 920px; }
+    .eyebrow { font: 600 11px/1 ui-monospace, monospace; letter-spacing: .32em; text-transform: uppercase; color: var(--ac); margin-bottom: 18px; }
+    .h-theme { font-family: var(--hf, Anton), Impact, sans-serif; font-weight: 400; text-transform: uppercase; line-height: .94; letter-spacing: .01em; font-size: clamp(38px, 8vw, 84px); margin: 0 0 18px; }
+    .hl { color: var(--ac); }
+    .lead { font-size: 15px; line-height: 1.65; max-width: 580px; margin: 0 0 26px; color: var(--mut); }
+    .btns { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 32px; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 24px; border-radius: 999px; font-weight: 600; font-size: 14px; border: 0; cursor: pointer; }
+    .btnP { background: var(--pbg); color: var(--pfg); }
+    .btnG { background: transparent; border: 1px solid var(--line2, rgba(127,127,127,.45)); color: var(--fg); }
+    .row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+    .stat { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 16px 20px; min-width: 140px; }
+    .stat b { display: block; font-family: var(--hf, Anton), Impact, sans-serif; font-weight: 400; font-size: 28px; margin-bottom: 6px; color: var(--ac); }
+    .stat span { font: 500 10px/1 ui-monospace, monospace; letter-spacing: .2em; text-transform: uppercase; color: var(--mut); }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { padding: 7px 12px; border-radius: 10px; font: 500 11px/1 ui-monospace, monospace; background: var(--chipbg); border: 1px solid var(--chipline, var(--line)); color: var(--chipfg); }
+
+    /* ---------- C1 editorial index ---------- */
+    .c1 { --bg:#F2F0EB; --fg:#17150F; --mut:#6E6A5E; --ac:#17150F; --card:#E9E4D8; --line:#17150F1f; --line2:#17150F33; --pbg:#17150F; --pfg:#F2F0EB; --chipbg:transparent; --chipfg:#45423A; --chipline:#17150F33; --hf:"Space Grotesk"; --tagline:#17150F44; --tagbg:#F2F0EBDD; --tagfg:#17150F; }
+    .c1 .h-theme { font-weight: 700; letter-spacing: -0.02em; }
+    .c1 .lead { max-width: 520px; }
+
+    /* ---------- C2 neo-brutalist ---------- */
+    .c2 { --bg:#FAF7F2; --fg:#0A0A0A; --mut:#56524A; --ac:#FF4D00; --card:#FFFDF8; --line:#0A0A0A; --line2:#0A0A0A; --pbg:#0A0A0A; --pfg:#FAF7F2; --chipbg:#FFFFFF; --chipfg:#0A0A0A; --chipline:#0A0A0A; --tagline:#0A0A0A; --tagbg:#FFD60A; --tagfg:#0A0A0A; }
+    .c2 .btn, .c2 .chip, .c2 .stat { border-radius: 4px; }
+    .c2 .btnP { box-shadow: 4px 4px 0 #FF4D00; }
+    .c2 .btnG { border: 1.5px solid #0A0A0A; }
+    .c2 .stat { border-width: 1.5px; box-shadow: 4px 4px 0 rgba(10,10,10,.14); }
+    .c2 .chip { border-width: 1.5px; }
+    .c2 .h-theme { letter-spacing: .01em; }
+
+    /* ---------- C3 terminal ---------- */
+    .c3 { --bg:#080D0A; --fg:#D9F7E8; --mut:#5E8574; --ac:#00FF9C; --card:#0D1511; --line:#1C2A22; --line2:#24382D; --pbg:#00FF9C; --pfg:#04120B; --chipbg:#0D1511; --chipfg:#9FE8C3; --chipline:#1C2A22; --hf:"JetBrains Mono"; }
+    .c3 .h-theme { font-weight: 600; letter-spacing: 0; font-size: clamp(28px, 5.4vw, 56px); }
+    .c3 .lead { font-family: "JetBrains Mono", monospace; font-size: 13px; }
+    .c3 .btn { border-radius: 6px; font-family: "JetBrains Mono", monospace; }
+    .c3 .stat b { font-family: "JetBrains Mono", monospace; font-weight: 600; }
+    .c3 .stat, .c3 .chip { border-radius: 8px; }
+
+    /* ---------- C4 chrome liquid ---------- */
+    .c4 { --bg:#0B0D10; --fg:#EDEFF3; --mut:#8A909C; --ac:#4D7CFE; --card:#12151A; --line:#262B34; --line2:#333A46; --pbg:#4D7CFE; --pfg:#FFFFFF; --chipbg:#141820; --chipfg:#B9C2D2; --chipline:#2A303A; }
+    .c4 { background: radial-gradient(120% 90% at 50% -10%, rgba(77,124,254,.16), transparent 50%), #0B0D10; }
+    .c4 .chrome { background: linear-gradient(180deg,#F6F7F9 8%,#C3C8D1 38%,#787F8B 52%,#E8EAEE 78%,#9AA1AC 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .c4 .stat, .c4 .chip { border-radius: 12px; }
+
+    /* ---------- C5 warm editorial ---------- */
+    .c5 { --bg:#FAF6EF; --fg:#22322B; --mut:#7A8A80; --ac:#C0592F; --card:#F2EBDE; --line:#E3D9C7; --line2:#C9BCA4; --pbg:#1E3D33; --pfg:#FAF6EF; --chipbg:#F2EBDE; --chipfg:#43554C; --chipline:#E0D6C3; --hf:"Fraunces"; --tagline:#22322B44; --tagbg:#FAF6EFDD; --tagfg:#22322B; }
+    .c5 .h-theme { font-weight: 600; text-transform: none; letter-spacing: -0.01em; font-size: clamp(34px, 6.6vw, 72px); }
+    .c5 .h-theme .it { font-style: italic; color: var(--ac); }
+    .c5 .eyebrow { letter-spacing: .38em; }
+
+    /* ---------- C6 midnight amber ---------- */
+    .c6 { --bg:#121110; --fg:#F7F2E9; --mut:#A29A8C; --ac:#FFB000; --card:#1A1714; --line:#2A2520; --line2:#3A332B; --pbg:#FFB000; --pfg:#1A1104; --chipbg:#1A1714; --chipfg:#D8CFC0; --chipline:#2A2520; }
+    .c6 { background: radial-gradient(110% 80% at 50% -10%, rgba(255,176,0,.08), transparent 55%), #121110; }
+
+    /* ---------- D sections (layouts) ---------- */
+    .dp { position: relative; padding: 88px 24px 72px; display: flex; align-items: center; justify-content: center; min-height: 74vh; }
+    .dp .tag { border: 1px solid var(--tagline); background: var(--tagbg); color: var(--tagfg); }
+    .p-sub { font: 600 11px/1 ui-monospace, monospace; letter-spacing: .3em; text-transform: uppercase; color: var(--mut); margin-bottom: 16px; }
+    .p-title { font-family: Anton, Impact, sans-serif; font-weight: 400; text-transform: uppercase; font-size: clamp(30px, 4.4vw, 48px); margin: 0 0 30px; color: var(--fg); }
+    .pwrap { width: 100%; max-width: 1040px; }
+
+    /* D1 light editorial index */
+    .d1 { --tagline:#14120C44; --tagbg:#F1EFE9DD; --tagfg:#14120C; background: #F1EFE9; color: #14120C; }
+    .d1 { --fg:#14120C; --mut:#6E6A5E; }
+    .idx { display: grid; grid-template-columns: 1.45fr 1fr; gap: 30px; align-items: center; }
+    @media (max-width: 820px) { .idx { grid-template-columns: 1fr; } .idx-view { display: none; } }
+    .idx-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 17px 10px; border-bottom: 1px solid #14120C22; cursor: pointer; transition: background .25s ease, color .25s ease, padding-left .25s ease; }
+    .idx-row .r-name { font-family: "Space Grotesk", Inter, sans-serif; font-weight: 600; font-size: 19px; }
+    .idx-row .r-meta { display: flex; align-items: center; gap: 14px; font: 500 10px/1 ui-monospace, monospace; letter-spacing: .16em; text-transform: uppercase; color: #6E6A5E; }
+    .idx-row .r-num { font: 500 11px/1 ui-monospace, monospace; color: #A8A291; }
+    .idx-row:hover, .idx-row.on { background: #14120C; color: #F1EFE9; padding-left: 18px; }
+    .idx-row.on .r-meta, .idx-row:hover .r-meta { color: #B8B2A2; }
+    .idx-view { border: 1px solid #14120C22; border-radius: 18px; overflow: hidden; background: #E6E2D6; }
+    .idx-view img { display: block; width: 100%; height: 300px; object-fit: cover; }
+    .idx-cap { display: flex; justify-content: space-between; padding: 12px 16px; font: 500 10px/1 ui-monospace, monospace; letter-spacing: .18em; text-transform: uppercase; color: #6E6A5E; border-top: 1px solid #14120C22; }
+
+    /* D2 bento */
+    .d2 { --tagline:rgba(255,255,255,.28); --tagbg:rgba(12,12,16,.6); --tagfg:#fff; background: #0D0F14; color: #EDEFF3; --fg:#EDEFF3; --mut:#8A909C; }
+    .bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+    .bt { background: #14171E; border: 1px solid #232833; border-radius: 18px; padding: 18px; overflow: hidden; position: relative; }
+    .bt h4 { margin: 0 0 8px; font-size: 15px; }
+    .bt p { margin: 0; color: #8A909C; font-size: 12.5px; line-height: 1.55; }
+    .bt-hero { grid-column: span 4; grid-row: span 2; display: flex; flex-direction: column; justify-content: center; }
+    .bt-hero h3 { font-family: "Space Grotesk", sans-serif; font-size: clamp(20px, 2.6vw, 30px); margin: 0 0 10px; letter-spacing: -0.01em; }
+    .bt-hero h3 span { color: #6ea8fe; }
+    .bt-stat { grid-column: span 1; text-align: center; display: flex; flex-direction: column; justify-content: center; }
+    .bt-stat b { font-family: Anton, sans-serif; font-weight: 400; font-size: 30px; color: #6ea8fe; }
+    .bt-stat span { font: 500 9px/1.5 ui-monospace, monospace; letter-spacing: .18em; text-transform: uppercase; color: #8A909C; }
+    .bt-chips { grid-column: span 2; }
+    .bt-feat { grid-column: span 4; min-height: 150px; display: flex; align-items: flex-end; background-size: cover; background-position: center; }
+    .bt-feat::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 30%, rgba(6,8,12,.88)); }
+    .bt-feat div { position: relative; z-index: 2; }
+    .bt-feat strong { font-size: 15px; display: block; }
+    .bt-feat em { font: 500 10px/1 ui-monospace, monospace; letter-spacing: .18em; text-transform: uppercase; color: #9fb6ff; font-style: normal; }
+    .bt-tags { grid-column: span 2; }
+    @media (max-width: 820px) { .bento { grid-template-columns: repeat(2, 1fr); } .bt-hero, .bt-feat { grid-column: span 2; } .bt-stat { grid-column: span 1; } .bt-chips, .bt-tags { grid-column: span 2; } }
+
+    /* D3 sticky cinematic */
+    .d3sec { --tagline:rgba(255,255,255,.28); --tagbg:rgba(12,12,16,.6); --tagfg:#fff; background: #0C0E12; color: #EDEFF3; --fg:#EDEFF3; --mut:#8A909C; }
+    .d3wrap { display: grid; grid-template-columns: 1.15fr 1fr; gap: 22px; align-items: start; }
+    @media (max-width: 820px) { .d3wrap { grid-template-columns: 1fr; } }
+    .d3scene { border-radius: 20px; overflow: hidden; border: 1px solid #232833; position: relative; }
+    .d3scene img { display: block; width: 100%; height: 340px; object-fit: cover; opacity: .92; }
+    .d3scene .d3-cap { position: absolute; left: 16px; bottom: 14px; font: 500 10px/1 ui-monospace, monospace; letter-spacing: .2em; text-transform: uppercase; color: #DCE3F0; text-shadow: 0 2px 12px rgba(0,0,0,.8); }
+    #d3scroll { height: 340px; overflow-y: auto; border: 1px solid #232833; border-radius: 20px; background: #101318; scrollbar-width: thin; }
+    .d3-step { min-height: 340px; padding: 34px 30px; display: flex; flex-direction: column; justify-content: center; opacity: .22; transition: opacity .45s ease, transform .45s ease; transform: translateY(8px); }
+    .d3-step.on { opacity: 1; transform: none; }
+    .d3-step .n { font: 600 12px/1 ui-monospace, monospace; letter-spacing: .3em; color: #6ea8fe; margin-bottom: 14px; }
+    .d3-step h4 { font-family: "Space Grotesk", sans-serif; font-size: 26px; margin: 0 0 10px; }
+    .d3-step p { margin: 0; color: #8A909C; font-size: 13.5px; line-height: 1.6; }
+
+    /* ---------- E animation demos ---------- */
+    .esec { background: #0A0B0E; color: #EDEFF3; padding: 92px 24px 80px; position: relative; --tagline:rgba(255,255,255,.28); --tagbg:rgba(12,12,16,.6); --tagfg:#fff; }
+    .egrid { max-width: 1040px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+    .ecard { background: #12141A; border: 1px solid #232833; border-radius: 18px; padding: 22px; min-height: 210px; display: flex; flex-direction: column; }
+    .ecode { font: 600 11px/1 ui-monospace, monospace; letter-spacing: .22em; color: #6ea8fe; margin-bottom: 14px; }
+    .edemo { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .edesc { color: #8A909C; font-size: 12.5px; line-height: 1.55; margin: 14px 0 0; }
+    .prel-num { font: 600 42px/1 ui-monospace, monospace; color: #EDEFF3; }
+    .prel-bar { height: 4px; border-radius: 99px; background: #232833; margin-top: 14px; overflow: hidden; }
+    .prel-bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg,#6ea8fe,#38bdf8); }
+    #scramble { font-family: "Space Grotesk", sans-serif; font-size: clamp(20px, 3vw, 30px); font-weight: 700; letter-spacing: .06em; color: #EDEFF3; }
+    .rise { opacity: 0; transform: translateY(16px); transition: opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1); }
+    .rise.in { opacity: 1; transform: none; }
+    .rise:nth-child(2) { transition-delay: .08s; }
+    .rise:nth-child(3) { transition-delay: .16s; }
+    .rise:nth-child(4) { transition-delay: .24s; }
+    .e4row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border: 1px solid #232833; border-radius: 12px; margin-bottom: 8px; cursor: pointer; transition: border-color .25s, background .25s; position: relative; }
+    .e4row:hover { border-color: #6ea8fe88; background: #161a22; }
+    .e4row span { font-size: 13.5px; font-weight: 600; }
+    .e4row em { font: 500 10px/1 ui-monospace, monospace; letter-spacing: .16em; text-transform: uppercase; color: #7C8698; font-style: normal; }
+    .e4img { position: absolute; right: 12px; top: -46px; width: 96px; height: 64px; object-fit: cover; border-radius: 10px; border: 1px solid #333A46; opacity: 0; transform: translateY(8px) scale(.94); transition: opacity .3s, transform .3s; pointer-events: none; z-index: 3; }
+    .e4row:hover .e4img { opacity: 1; transform: none; }
+    .e5strip { overflow: hidden; border-top: 1px solid #232833; border-bottom: 1px solid #232833; padding: 12px 0; }
+    .e5track { display: flex; width: max-content; animation: e5 16s linear infinite; }
+    .e5track span { padding: 0 18px; font: 600 13px/1 ui-monospace, monospace; letter-spacing: .24em; text-transform: uppercase; color: #B9C2D2; white-space: nowrap; }
+    .e5track span b { color: #6ea8fe; font-weight: 600; }
+    @keyframes e5 { to { transform: translateX(-50%); } }
+    .wipe { position: relative; height: 132px; border-radius: 14px; overflow: hidden; border: 1px solid #232833; background: #0D1017; }
+    .wipe-base { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: "Space Grotesk", sans-serif; font-weight: 700; letter-spacing: .3em; font-size: 15px; color: #2E3644; }
+    .wipe-panel { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: "Space Grotesk", sans-serif; font-weight: 700; letter-spacing: .3em; font-size: 15px; color: #06121F; background: linear-gradient(115deg, #7dd3fc, #38bdf8 60%, #0ea5e9); clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); animation: wipeslide 5.2s cubic-bezier(.75,0,.22,1) infinite; }
+    @keyframes wipeslide { 0%, 36% { transform: translateX(0); } 54%, 86% { transform: translateX(-106%); } 100% { transform: translateX(0); } }
+
+    .outro { padding: 64px 24px 96px; text-align: center; color: #b9c0cc; font-size: 15px; line-height: 1.7; background: #08090c; }
+    .outro b { color: #fff; }
+    .outro .big { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 19px; color: #fff; }
+  </style>
+</head>
+<body>
+
+  <header class="intro">
+    <h1>Round 2 — More Themes, Layouts & Motion</h1>
+    <p>I studied the current award-winning portfolio sites (<b>Awwwards Site of the Day winners, Oct 2026</b>) before building these. Every panel below is clickable-free — just <b>look and scroll</b>.</p>
+    <p>Reply with codes, example: <b>"C3 + D1 + E1, E2"</b> — a theme, a projects layout, and any animations.</p>
+    <span class="badge live">Current live theme: A4 Deep Blue Pro ✓</span>
+    <span class="badge rec">You can combine ANY theme with ANY layout</span>
+
+    <div class="research">
+      <h2>What the top sites are doing right now</h2>
+      <ul>
+        <li><b>Text-first work indexes</b> — winners like <span>huyml.co</span> (Huy Phan) list projects as giant typographic rows; hovering reveals the image. Simple, confident, very "designer".</li>
+        <li><b>Developer portfolios win with personality</b> — <span>nahiyan.codes</span> (SOTD + Developer Award) is almost all text: "today", "yesterday", a personal voice, small playful details. No heavy effects.</li>
+        <li><b>Monochrome + ONE loud color</b> — off-white/charcoal base with a single vivid accent (orange, green, amber, blue). Never many colors at once.</li>
+        <li><b>Personality details</b> — local time in the corner, availability badge, sound toggle, "playground" section, serif italic accent words.</li>
+        <li><b>Cinematic but controlled motion</b> — staggered reveals, marquees, hover image reveals, sticky scroll scenes. One strong idea per page, not ten small ones.</li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- ================= C1 ================= -->
+  <section class="panel c1">
+    <span class="tag">C1 · Editorial Index <span class="sw"><i style="background:#F2F0EB"></i><i style="background:#17150F"></i><i style="background:#6E6A5E"></i><i style="background:#E9E4D8"></i></span></span>
+    <div class="mini">
+      <div class="eyebrow">Muhammad Huzaifa Rehan — AI Engineer</div>
+      <h2 class="h-theme">Work that<br /><span class="hl">thinks.</span></h2>
+      <p class="lead">Bone-white editorial style like award portfolios: huge grotesk type, mono labels, project list with hover reveals. Clean, confident, timeless.</p>
+      <div class="btns">
+        <button class="btn btnP">View the work</button>
+        <button class="btn btnG">Get in touch</button>
+      </div>
+      <div class="row">
+        <div class="stat"><b>10+</b><span>Projects shipped</span></div>
+        <div class="stat"><b>1st</b><span>FYP Award</span></div>
+        <div class="chips"><span class="chip">Python</span><span class="chip">YOLO</span><span class="chip">RAG</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= C2 ================= -->
+  <section class="panel c2">
+    <span class="tag">C2 · Neo-Brutalist Swiss <span class="sw"><i style="background:#FAF7F2"></i><i style="background:#0A0A0A"></i><i style="background:#FF4D00"></i><i style="background:#FFD60A"></i></span></span>
+    <div class="mini">
+      <div class="eyebrow">Portfolio — 2026</div>
+      <h2 class="h-theme">AI ENGINEER.<br /><span class="hl">NO FILTER.</span></h2>
+      <p class="lead">Off-white paper, black ink, one screaming orange. Hard shadows, thick borders, mono stickers. Bold, memorable, impossible to ignore.</p>
+      <div class="btns">
+        <button class="btn btnP">VIEW PROJECTS</button>
+        <button class="btn btnG">CONTACT</button>
+      </div>
+      <div class="row">
+        <div class="stat"><b>10+</b><span>Projects</span></div>
+        <div class="stat"><b>1st</b><span>FYP Award</span></div>
+        <div class="chips"><span class="chip">PYTHON</span><span class="chip">YOLO</span><span class="chip">RAG</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= C3 ================= -->
+  <section class="panel c3">
+    <span class="tag">C3 · Terminal Console <span class="sw"><i style="background:#080D0A"></i><i style="background:#00FF9C"></i><i style="background:#D9F7E8"></i><i style="background:#0D1511"></i></span></span>
+    <div class="mini">
+      <div class="eyebrow">huzaifa@portfolio:~$ whoami</div>
+      <h2 class="h-theme">&gt; <span id="tw">AI Engineer</span><span class="hl">_</span></h2>
+      <p class="lead">// Computer vision, LLMs and RAG pipelines. I train models and ship them as real products. Type-safe, tested, deployed.</p>
+      <div class="btns">
+        <button class="btn btnP">[ view_projects ]</button>
+        <button class="btn btnG">[ contact --now ]</button>
+      </div>
+      <div class="row">
+        <div class="stat"><b>10+</b><span>projects_built</span></div>
+        <div class="stat"><b>1st</b><span>fyp_award</span></div>
+        <div class="chips"><span class="chip">--python</span><span class="chip">--yolo</span><span class="chip">--rag</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= C4 ================= -->
+  <section class="panel c4">
+    <span class="tag">C4 · Chrome Liquid <span class="sw"><i style="background:#0B0D10"></i><i style="background:#C3C8D1"></i><i style="background:#4D7CFE"></i><i style="background:#232833"></i></span></span>
+    <div class="mini">
+      <div class="eyebrow">Muhammad Huzaifa Rehan</div>
+      <h2 class="h-theme"><span class="chrome">AI Engineer</span></h2>
+      <p class="lead">Liquid-metal chrome type over deep charcoal with one electric blue accent. Futuristic, premium, "next-gen product" energy.</p>
+      <div class="btns">
+        <button class="btn btnP">View Projects</button>
+        <button class="btn btnG">Get in Touch</button>
+      </div>
+      <div class="row">
+        <div class="stat"><b>10+</b><span>Projects Built</span></div>
+        <div class="stat"><b>1st</b><span>FYP Award</span></div>
+        <div class="chips"><span class="chip">Python</span><span class="chip">YOLO</span><span class="chip">RAG</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= C5 ================= -->
+  <section class="panel c5">
+    <span class="tag">C5 · Warm Editorial Studio <span class="sw"><i style="background:#FAF6EF"></i><i style="background:#1E3D33"></i><i style="background:#C0592F"></i><i style="background:#E9E1D2"></i></span></span>
+    <div class="mini">
+      <div class="eyebrow">Muhammad Huzaifa Rehan</div>
+      <h2 class="h-theme">Quiet design.<br /><span class="it">Loud results.</span></h2>
+      <p class="lead">Cream magazine paper, deep forest green and terracotta. Serif headlines like a printed portfolio from a design studio. Calm, premium, human.</p>
+      <div class="btns">
+        <button class="btn btnP">Selected Work</button>
+        <button class="btn btnG">Contact</button>
+      </div>
+      <div class="row">
+        <div class="stat"><b>10+</b><span>Projects Built</span></div>
+        <div class="stat"><b>1st</b><span>FYP Award</span></div>
+        <div class="chips"><span class="chip">Python</span><span class="chip">Computer Vision</span><span class="chip">GenAI</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= C6 ================= -->
+  <section class="panel c6">
+    <span class="tag">C6 · Midnight Amber <span class="sw"><i style="background:#121110"></i><i style="background:#FFB000"></i><i style="background:#F7F2E9"></i><i style="background:#2A2520"></i></span></span>
+    <div class="mini">
+      <div class="eyebrow">Muhammad Huzaifa Rehan</div>
+      <h2 class="h-theme">Warm dark.<br /><span class="hl">Sharp mind.</span></h2>
+      <p class="lead">Same cinematic dark structure as your current theme, but in warm charcoal + amber — feels like a film studio instead of a lab.</p>
+      <div class="btns">
+        <button class="btn btnP">View Projects</button>
+        <button class="btn btnG">Get in Touch</button>
+      </div>
+      <div class="row">
+        <div class="stat"><b>10+</b><span>Projects Built</span></div>
+        <div class="stat"><b>1st</b><span>FYP Award</span></div>
+        <div class="chips"><span class="chip">Python</span><span class="chip">YOLO</span><span class="chip">RAG</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= D1 ================= -->
+  <section class="dp d1">
+    <span class="tag">D1 · Projects — Editorial work index (hover the rows)</span>
+    <div class="pwrap">
+      <div class="p-sub">04 — Selected Work</div>
+      <h3 class="p-title">Index</h3>
+      <div class="idx">
+        <div class="idx-list">
+          <div class="idx-row on" data-img="images/VisionDetect-Pro.webp" data-cap="Computer Vision">
+            <span class="r-num">01</span><span class="r-name">VisionDetect Pro</span><span class="r-meta"><span>Computer Vision</span><span>2026</span></span>
+          </div>
+          <div class="idx-row" data-img="images/DocIQ.webp" data-cap="Generative AI + RAG">
+            <span class="r-num">02</span><span class="r-name">DocIQ</span><span class="r-meta"><span>RAG</span><span>2026</span></span>
+          </div>
+          <div class="idx-row" data-img="images/NovaChat.webp" data-cap="LLM Fine-Tuning">
+            <span class="r-num">03</span><span class="r-name">NovaChat</span><span class="r-meta"><span>LoRA</span><span>2025</span></span>
+          </div>
+          <div class="idx-row" data-img="images/Satellite-Change-Detection.webp" data-cap="Remote Sensing">
+            <span class="r-num">04</span><span class="r-name">Satellite Change Detection</span><span class="r-meta"><span>Segmentation</span><span>2025</span></span>
+          </div>
+          <div class="idx-row" data-img="images/SmartCart.webp" data-cap="AI + Robotics — 1st FYP">
+            <span class="r-num">05</span><span class="r-name">Smart Cart Navigator</span><span class="r-meta"><span>Robotics</span><span>2024</span></span>
+          </div>
+          <div class="idx-row" data-img="images/Documind-AI.webp" data-cap="Document AI">
+            <span class="r-num">06</span><span class="r-name">DocuMind AI</span><span class="r-meta"><span>OCR + RAG</span><span>2024</span></span>
+          </div>
+        </div>
+        <div class="idx-view">
+          <img id="idx-img" src="images/VisionDetect-Pro.webp" alt="Project preview" />
+          <div class="idx-cap"><span id="idx-cap">Computer Vision</span><span>Selected work →</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= D2 ================= -->
+  <section class="dp d2">
+    <span class="tag">D2 · Projects + Skills — Bento grid</span>
+    <div class="pwrap">
+      <div class="p-sub">04 — Selected Work</div>
+      <h3 class="p-title">Bento</h3>
+      <div class="bento">
+        <div class="bt bt-hero">
+          <h3>Hi, I'm Huzaifa — I build <span>AI that ships.</span></h3>
+          <p>Everything in one glance: who I am, what I built, what I use. Modern product-style dashboard layout.</p>
+        </div>
+        <div class="bt bt-stat"><b>10+</b><span>Projects</span></div>
+        <div class="bt bt-stat"><b>1st</b><span>FYP Award</span></div>
+        <div class="bt bt-chips">
+          <h4>Toolbox</h4>
+          <div class="chips"><span class="chip">Python</span><span class="chip">PyTorch</span><span class="chip">YOLO</span><span class="chip">FastAPI</span><span class="chip">React</span></div>
+        </div>
+        <div class="bt bt-feat" style="background-image:url('images/VisionDetect-Pro.webp')">
+          <div><em>Featured project</em><strong>VisionDetect Pro — real-time detection & tracking</strong></div>
+        </div>
+        <div class="bt bt-tags">
+          <h4>Currently</h4>
+          <p>Building agentic AI tools with RAG + computer vision. Open to opportunities.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= D3 ================= -->
+  <section class="dp d3sec">
+    <span class="tag">D3 · Projects — Cinematic sticky scene (scroll inside the box)</span>
+    <div class="pwrap">
+      <div class="p-sub">04 — Selected Work</div>
+      <h3 class="p-title">Sticky Scene</h3>
+      <div class="d3wrap">
+        <div class="d3scene">
+          <img src="images/Satellite-Change-Detection.webp" alt="Pinned project" />
+          <span class="d3-cap">Satellite Change Detection — 2025</span>
+        </div>
+        <div id="d3scroll">
+          <div class="d3-step on">
+            <div class="n">STEP 01 — PROBLEM</div>
+            <h4>See the change</h4>
+            <p>Satellite images arrive months apart. Something moved — construction, flooding, growth — and pixels are the only witness.</p>
+          </div>
+          <div class="d3-step">
+            <div class="n">STEP 02 — MODEL</div>
+            <h4>Teach the machine</h4>
+            <p>A segmentation network (SegFormer / ChangeFormer) learns what change looks like across seasons and shadows.</p>
+          </div>
+          <div class="d3-step">
+            <div class="n">STEP 03 — PRODUCT</div>
+            <h4>Ship the insight</h4>
+            <p>FastAPI + React dashboard: upload two dates, get an interactive map of what changed and where. One click.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= E ================= -->
+  <section class="esec">
+    <div class="egrid" style="margin-bottom:26px">
+      <div class="ecard" style="grid-column:1/-1;min-height:0;padding:26px 28px;display:block">
+        <div class="ecode">E · ANIMATIONS & CINEMATICS — all live on this page</div>
+        <p class="edesc" style="margin:0">These are real, running demos, not screenshots. Pick the ones you like and I'll wire them into the portfolio.</p>
+      </div>
+
+      <div class="ecard">
+        <div class="ecode">E1 · PRELOADER COUNTER</div>
+        <div class="edemo">
+          <div class="prel-num" id="e1num">000</div>
+          <div class="prel-bar"><i id="e1bar"></i></div>
+        </div>
+        <p class="edesc">Cinematic intro: percentage counts up, bar fills, then the page reveals. Classic award-site opening.</p>
+      </div>
+
+      <div class="ecard">
+        <div class="ecode">E2 · TEXT SCRAMBLE</div>
+        <div class="edemo">
+          <div id="scramble">COMPUTER VISION</div>
+        </div>
+        <p class="edesc">Headlines "decode" like a machine reading them. Very fitting for an AI engineer. Loops through your specialties.</p>
+      </div>
+
+      <div class="ecard">
+        <div class="ecode">E3 · SCROLL REVEALS</div>
+        <div class="edemo">
+          <div class="chips">
+            <span class="chip rise">Python</span>
+            <span class="chip rise">YOLO</span>
+            <span class="chip rise">RAG Pipelines</span>
+            <span class="chip rise">FastAPI</span>
+          </div>
+        </div>
+        <p class="edesc">Elements rise + fade in one by one as you scroll. (Scroll down and back up — they replay.)</p>
+      </div>
+
+      <div class="ecard">
+        <div class="ecode">E4 · HOVER IMAGE REVEAL</div>
+        <div class="edemo" style="position:relative">
+          <div class="e4row"><span>DocIQ</span><em>hover me</em><img class="e4img" src="images/DocIQ.webp" alt="" /></div>
+          <div class="e4row"><span>NovaChat</span><em>hover me</em><img class="e4img" src="images/NovaChat.webp" alt="" /></div>
+        </div>
+        <p class="edesc">Text row, image pops out on hover. The signature move of the editorial index (see D1).</p>
+      </div>
+
+      <div class="ecard">
+        <div class="ecode">E5 · INFINITE MARQUEE</div>
+        <div class="edemo">
+          <div class="e5strip">
+            <div class="e5track">
+              <span>Computer Vision <b>✦</b></span><span>YOLO <b>✦</b></span><span>Generative AI <b>✦</b></span><span>RAG <b>✦</b></span><span>Deep Learning <b>✦</b></span><span>FastAPI <b>✦</b></span>
+              <span>Computer Vision <b>✦</b></span><span>YOLO <b>✦</b></span><span>Generative AI <b>✦</b></span><span>RAG <b>✦</b></span><span>Deep Learning <b>✦</b></span><span>FastAPI <b>✦</b></span>
+            </div>
+          </div>
+        </div>
+        <p class="edesc">Endless ticker of your skills. You already have this — I can intensify it as a design band.</p>
+      </div>
+
+      <div class="ecard">
+        <div class="ecode">E6 · SECTION WIPE</div>
+        <div class="edemo">
+          <div class="wipe">
+            <div class="wipe-base">ABOUT</div>
+            <div class="wipe-panel">PROJECTS</div>
+          </div>
+        </div>
+        <p class="edesc">Sections change with a cinematic diagonal wipe instead of a plain slide. Looping demo above.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="outro">
+    <p class="big">Reply with codes — example: "C3 + D1 + E1, E2, E4"</p>
+    <p>Theme from <b>C1–C6</b> · Projects layout from <b>D1–D3</b> (or keep <b>B3 filmstrip</b>) · Animations from <b>E1–E6</b> (pick as many as you want).</p>
+    <p>Not sure? Just say <b>"you choose"</b> — my recommendation: <b>C1 + D1</b> if you want the award-site look, or <b>C3 + D3 + E1, E2</b> if you want the AI-engineer cinematic one.</p>
+  </div>
+
+  <script>
+    // E1 — preloader counter loop
+    (function () {
+      var num = document.getElementById("e1num");
+      var bar = document.getElementById("e1bar");
+      if (!num || !bar) return;
+      function loop() {
+        var start;
+        function tick(t) {
+          if (!start) start = t;
+          var p = Math.min(1, (t - start) / 1300);
+          num.textContent = String(Math.round(p * 100)).padStart(3, "0");
+          bar.style.width = (p * 100) + "%";
+          if (p < 1) requestAnimationFrame(tick);
+          else setTimeout(function () { num.textContent = "000"; bar.style.width = "0%"; loop(); }, 1100);
+        }
+        requestAnimationFrame(tick);
+      }
+      loop();
+    })();
+
+    // E2 — text scramble loop
+    (function () {
+      var el = document.getElementById("scramble");
+      if (!el) return;
+      var CH = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*<>/";
+      var words = ["COMPUTER VISION", "GENERATIVE AI", "MACHINE LEARNING", "DEEP LEARNING"];
+      var wi = 0;
+      function scrambleTo(target) {
+        var frame = 0;
+        var total = target.length + 10;
+        function step() {
+          var out = "";
+          for (var i = 0; i < target.length; i++) {
+            if (i < frame - 6) out += target[i];
+            else if (target[i] === " ") out += " ";
+            else out += CH[(Math.random() * CH.length) | 0];
+          }
+          el.textContent = out;
+          frame++;
+          if (frame <= total) requestAnimationFrame(step);
+          else setTimeout(next, 1700);
+        }
+        step();
+      }
+      function next() {
+        wi = (wi + 1) % words.length;
+        scrambleTo(words[wi]);
+      }
+      setTimeout(function () { next(); }, 2200);
+    })();
+
+    // E3 — scroll reveals (replay when entering/leaving)
+    (function () {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { e.target.classList.toggle("in", e.isIntersecting); });
+      }, { threshold: 0.4 });
+      document.querySelectorAll(".rise").forEach(function (el) { io.observe(el); });
+    })();
+
+    // C3 — typewriter loop
+    (function () {
+      var el = document.getElementById("tw");
+      if (!el) return;
+      var words = ["AI Engineer", "Computer Vision", "Generative AI", "Machine Learning"];
+      var wi = 0, len = 0, dir = 1;
+      function tick() {
+        var w = words[wi];
+        len += dir;
+        if (len > w.length) { dir = -1; len = w.length; setTimeout(tick, 1300); el.textContent = w; return; }
+        if (len < 0) { dir = 1; len = 0; wi = (wi + 1) % words.length; }
+        el.textContent = words[wi].slice(0, Math.max(0, len));
+        setTimeout(tick, dir > 0 ? 80 : 40);
+      }
+      tick();
+    })();
+
+    // D1 — hover reveal index
+    (function () {
+      var rows = Array.prototype.slice.call(document.querySelectorAll(".idx-row"));
+      var img = document.getElementById("idx-img");
+      var cap = document.getElementById("idx-cap");
+      if (!rows.length || !img || !cap) return;
+      rows.forEach(function (r) {
+        r.addEventListener("mouseenter", function () {
+          rows.forEach(function (x) { x.classList.remove("on"); });
+          r.classList.add("on");
+          img.src = r.dataset.img;
+          cap.textContent = r.dataset.cap;
+        });
+      });
+    })();
+
+    // D3 — sticky scene scroll steps
+    (function () {
+      var sc = document.getElementById("d3scroll");
+      if (!sc) return;
+      var steps = Array.prototype.slice.call(sc.querySelectorAll(".d3-step"));
+      sc.addEventListener("scroll", function () {
+        var p = sc.scrollTop / Math.max(1, sc.scrollHeight - sc.clientHeight);
+        var idx = Math.min(steps.length - 1, Math.floor(p * steps.length));
+        steps.forEach(function (s, i) { s.classList.toggle("on", i === idx); });
+      }, { passive: true });
+    })();
+  </script>
+
+</body>
+</html>
